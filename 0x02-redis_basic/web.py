@@ -10,6 +10,7 @@ from functools import wraps
 
 redis_client = redis.Redis()
 
+
 def count_accesses(method: Callable) -> Callable:
     """
     Decorator to count accesses to a particular URL.
@@ -19,6 +20,7 @@ def count_accesses(method: Callable) -> Callable:
         redis_client.incr(f"count:{url}")
         return method(url)
     return wrapper
+
 
 def cache_result(expiration: int = 10) -> Callable:
     """
@@ -36,6 +38,7 @@ def cache_result(expiration: int = 10) -> Callable:
             return result
         return wrapper
     return decorator
+
 
 @count_accesses
 @cache_result(expiration=10)

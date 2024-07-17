@@ -8,7 +8,7 @@ from typing import Union, Callable, Optional
 from functools import wraps
 
 
-def count_calss(method: Callable) -> Callable:
+def count_calls(method: Callable) -> Callable:
     """
     Decorator to count the number of calls to a method.
 

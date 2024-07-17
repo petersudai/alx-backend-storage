@@ -5,7 +5,38 @@ Writing strings to Redis
 import redis
 import uuid
 from typing import Union, Callable, Optional
+from functools import wraps
 
+
+def count_calss(method: Callable) -> Callable:
+    """
+    Decorator to count the number of calls to a method.
+
+    Args:
+        method (Callable): The method to be decorated.
+
+    Returns:
+        Callable: The decorated method.
+    """
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """
+        Wrapper function that increments the count for the method call.
+
+        Args:
+            self: The instance of the class.
+            *args: Positional arguments to the method.
+            **kwargs: Keyword arguments to the method.
+
+        Returns:
+            The return value of the original method.
+        """
+        key = method.__qualname__
+        self._redis.incr(key)
+        return method(self, *args, **kwargs)
+
+    return wrapper
 
 class Cache:
     """
